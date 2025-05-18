@@ -1,4 +1,3 @@
-import streamlit as st
 streamlit run dashboard.py
 df = pd.read_csv("./data/covid_19_indonesia_time_series_all.csv")
 
