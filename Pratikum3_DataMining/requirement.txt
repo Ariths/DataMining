@@ -1,6 +1,6 @@
-streamlit
-pandas
-matplotlib
-scikit-learn
-plotly
+pip install streamlit
+pip install pandas
+pip install matplotlib
+pip install scikit-learn
+pip install plotly
 streamlit run dashboard.py
