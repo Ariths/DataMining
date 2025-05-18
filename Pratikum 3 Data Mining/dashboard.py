@@ -1,3 +1,5 @@
+
+%%writefile covid_dashboard.py
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -15,25 +17,21 @@ def load_data():
 
 df = load_data()
 
-# Ambil kolom yang diperlukan
 df = df[['Date', 'Location', 'Total Cases', 'Total Deaths', 'Total Recovered', 'Population Density']]
 df.dropna(inplace=True)
 
-# Sidebar untuk pilih lokasi
 unique_locations = df['Location'].unique()
 selected_location = st.sidebar.selectbox("Pilih Lokasi", unique_locations)
 location_data = df[df['Location'] == selected_location]
 
-# Plot tren kasus harian
 st.subheader(f"Tren Kasus Harian di {selected_location}")
-fig, ax = plt.subplots(figsize=(10, 4))
+fig, ax = plt.subplots(figsize=(10,4))
 daily_cases = location_data.groupby("Date").sum()['Total Cases']
 daily_cases.plot(ax=ax, color='red')
-ax.set_ylabel("Total Kasus")
-ax.set_xlabel("Tanggal")
+ax.set_ylabel("Total Cases")
+ax.set_xlabel("Date")
 st.pyplot(fig)
 
-# Clustering wilayah
 st.subheader("Hasil Clustering Wilayah")
 cluster_features = df.groupby("Location")[['Total Cases', 'Total Deaths', 'Total Recovered', 'Population Density']].mean()
 
@@ -44,10 +42,8 @@ kmeans = KMeans(n_clusters=4, random_state=42)
 clusters = kmeans.fit_predict(scaled_features)
 cluster_features['Cluster'] = clusters
 
-# Gabung data cluster ke dataframe awal
 df_clustered = df.merge(cluster_features['Cluster'], on='Location')
 
-# Kordinat manual (lokasi utama aja biar masuk peta)
 kordinat = pd.DataFrame({
     'Location': [
         'DKI Jakarta', 'Jawa Barat', 'Jawa Tengah', 'Jawa Timur',
@@ -63,9 +59,9 @@ kordinat = pd.DataFrame({
     ]
 })
 
+
 map_df = cluster_features.reset_index().merge(kordinat, on='Location')
 
-# Peta interaktif
 st.subheader("Peta Interaktif Clustering Wilayah")
 fig_map = px.scatter_mapbox(
     map_df,
@@ -79,6 +75,5 @@ fig_map = px.scatter_mapbox(
 )
 st.plotly_chart(fig_map, use_container_width=True)
 
-# Ringkasan cluster
 st.subheader("Ringkasan Risiko Wilayah Berdasarkan Cluster")
 st.dataframe(cluster_features.sort_values("Cluster"))
