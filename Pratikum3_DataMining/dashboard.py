@@ -1,3 +1,10 @@
+import streamlit as st
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans
+import plotly.express as px
+
 st.set_page_config(page_title="COVID-19 Clustering Dashboard", layout="wide")
 st.title("Clustering Dashboard COVID-19")
 
