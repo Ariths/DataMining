@@ -1,6 +1,3 @@
-streamlit run dashboard.py
-df = pd.read_csv("./data/covid_19_indonesia_time_series_all.csv")
-
 st.set_page_config(page_title="COVID-19 Clustering Dashboard", layout="wide")
 st.title("Clustering Dashboard COVID-19")
 
