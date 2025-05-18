@@ -1,4 +1,4 @@
-
+import streamlit as st
 
 st.set_page_config(page_title="COVID-19 Clustering Dashboard", layout="wide")
 st.title("Clustering Dashboard COVID-19")
